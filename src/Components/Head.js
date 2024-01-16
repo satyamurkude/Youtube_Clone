@@ -1,39 +1,71 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { toggleFunction } from '../utils/appSlice';
 import { useDispatch } from 'react-redux';
-
+import { YOUTUBE_SEARCH_API } from '../utils/constants';
 const Head = () => {
+const [searchQuery,setSearchQuery]=useState("")
+
+useEffect(()=>{const timer=setTimeout(()=>getSearchSuggestions(),200);
+return ()=>{
+   clearTimeout(timer)
+}},[searchQuery])
+const getSearchSuggestions=async()=>{
+  console.log("Api call- "+searchQuery)
+const data=await fetch(YOUTUBE_SEARCH_API + searchQuery)
+const json=await data.json();
+
+}
+
   const dispatch=useDispatch();
   const toggleHandler=()=>{
     dispatch(toggleFunction())
   }
   return (
-    <div className='grid grid-cols-3 grid-flow-col gap-4 items-center p-4 bg-gray-200 shadow-xl'>
-      <div className='col-span-1 flex justify-start'>
+    <div className="flex md:grid-flow-col mt-1 md:grid justify-between items-center border-b-2 shadow-sm  sticky top-0 bg-white md:shadow-none md:border-none">
+       <div className="flex items-center md:col-span-3">
         <img onClick={toggleHandler}
           className='h-8 m-1 cursor-pointer p-1'
           alt='hamburger menu'
           src='data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAMwAAADACAMAAAB/Pny7AAAAZlBMVEX///8AAAD+/v4BAQH7+/tiYmINDQ21tbUlJSU/Pz/S0tLKyspXV1dMTEwFBQX39/e8vLzu7u7g4OAsLCzo6OjDw8N+fn5xcXGYmJiHh4cUFBStra1FRUU4ODhRUVGNjY0eHh6ioqLSOa/LAAAEqklEQVR4nO2dCXPiOBCFJVnAYoPxgYFw5Pj/f3LVLTtjcmy5nWTUM/s+UlRIYlc/t+RDeuoYAwAAAAAAAAAAAAAAmI4zLnyljmIMB+Pc8J1oU+fc3YfksJD+W/mBmLHRD+LMoGZOZnx4vX5Ij/e9Eme8VI2qrIzg7Ig38qbuHjZbRWwOVW3MqMFMkcEvs6sez6VVRXnernayxDhumvXT8/2esre7TvKD82Ev6zIhj65+oCPxbtcKODaS1ITeYnYvQUpAnZoQ0NNOkBhSU7QhLSrFZHZZSbQ4tzsFLSrFUEgPtZl8UxMS0zzyVgrFhENsb/l0MeGv8jJslb0/taQntBZrC0k7M0XqmD8nHGO78tO1ONN9cMLXATUYexGJKXSLqUT3M3mrVkx4LXOBlnD9P7AYVYKGYEq7aERiTLWkCw3nNL5rgIIJWuxFdDvjzP5IFxlNUDzhghGufJLEUGa8K7Y27iNm5rXR3b+9//Rfv//SJr2YzF47J3iejw//3dpGIZoIId1WXjI24eJfN4tvb/TfwFZwJuubWUxkfri2/yiivR6r12M9vZkNN3F1oYp6CHAGCgdo5oeUaIDsE0Lr+tLR1TWk+WVSp2MEh5P6eHwT7i9rJn9PZgAAAAAAAAAA/PHwhO5oMCE1bhgtmhGNM3Jb109ChrPhwIqPLg+6aTLP/fIByluKE9m6fhtRlnQrT1qaaqWIqnHzm/9q056Xiji325c4Sykmv6aeWPqIWydz9fJsjqtuNOeuZJ55IITTXmSTTQFfXHnuPHX0bwkR3arpZhNWYxqeOtfn0LJZaTcSXyM1s5XV6dHKhD4gUsOeBpXNjPxmktQ4NgKVg6lBCX0kQQ0ZgSRiCk2WmUgfTSa0aKk2z1lpp9Fsa8zktsb8bJUtA/iF2HBKVuDUQX8MGc5uEicgu+d19hkyAtunWpCZQL4e70KDMHa+sUf7uRO1svCEejnzYoDh7J4eSkrGbf8kWdjAz8v1kx1nJL0TkDJDXkArW0ATn/7rl9bGZSfsWE9N2feX59BhZMu0qJ0Zny+el6k13LM8bzpPwUky4+Pzj89Pi40iFqecrpZectPstXuzdEcHAAAAAAAAAAAAAMCfgralhF+Kh4bPRQOhP453fYWvWRYt3swT3x6YHIqBDEqzYnEuDlLrYed7OfLMhA32xctxoYjjqdvPyUtgt1JYqmF7qZ2sKCCzpzJ6fUGQ1BIIDoXK6DUy9yx1l/2BTTcqdDDZ8H5shGJMfVqqLKNHM7R9rbbJWkyxtkpmZu8hh1Yr8gE4Q2X0ylJVM4vw7PmDxKHhHHlnQscvdfT9MaMyelMzky+596tLTGxntpM6AbnAoUYxQr+ZeXUCKhRDIUnK6BnOTOqwP4RLaYk8ml5vGT2qVGpLkROQyugpRVqtje59qtRBfwadzETm2VhGT1uJw2gFLLm+obAoYL6x6qoCxnPZuhP5zfiJrtikTsUb+hvFayWqPu94FaFpDq0y75y1y/aYy9acuX4ApK4Om7Umro+HVS38rxhxmRY9COyaXBVN/ebfYkzKTL/MVLDRb0NpWAAAAAAAAAAAAAAAAAAAAAAAAAAA/w/+BR+rd/lzu/fIAAAAAElFTkSuQmCC'
         />
-        <a href="/">
+        <a href="/" className='flex items-center'>
         <img
-          className='h-8 m-1 p-1'
-          alt='youtube-logo'
-          src='https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRVHkSb9Wd4qZGw89vmVfhISnSuBulPzbHsiA&usqp=CAU'
-        />
+                className="w-10 cursor-pointer"
+                src="https://www.freeiconspng.com/uploads/hd-youtube-logo-png-transparent-background-20.png"
+                alt="Youtube Logo"
+              />
+               <b className="cursor-pointer text-lg">U-Tube</b>
         </a>
       </div>
       
-        <div className='col-span-10 flex items-center '>
-        <input
-          className=' flex items-center border  border-black placeholder:font-bold w-1/2 p-2 rounded-l-full'
-          placeholder='Search text'
-          type='text'
-        />
-        <button className='border border-black font-bold px-5 py-2  bg-slate-300 rounded-r-full'>
-        🔍
-        </button>
-        </div>
+      <div className='col-span-10 flex items-start px-10 flex-col'>
+  <div className='flex items-center w-[70%]'>
+    <input
+      className='flex items-center border w-full border-black placeholder:font-bold  px-5 py-2 rounded-l-full'
+      placeholder='Search text'
+      type='text'
+      value={searchQuery}
+      onChange={(e) => setSearchQuery(e.target.value)}
+    />
+
+    <button className='border border-black font-bold px-5 py-2 bg-slate-300 rounded-r-full'>
+      🔍
+    </button>
+  </div>
+
+  <div className=' ml-4 w-[39%] fixed mt-10 bg-white border z-90 py-2 px-5 rounded-md shadow-xl border-black'>
+    <ul className='px-5 py-2'>
+      <li>   🔍 Iphone</li>
+      <li>    🔍 Iphone</li> 
+      <li>   🔍 Iphone</li>
+      <li>   🔍 Iphone</li> 
+      <li>   🔍 Iphone</li>
+      <li>   🔍 Iphone</li> 
+   
+    </ul>
+  </div>
+</div>
+
         <button>
           <img
             className='h-8 col-span-1 '
