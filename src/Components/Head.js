@@ -4,16 +4,16 @@ import { useDispatch } from 'react-redux';
 import { YOUTUBE_SEARCH_API } from '../utils/constants';
 const Head = () => {
 const [searchQuery,setSearchQuery]=useState("")
-
+const [suggestions,setSuggestions]=useState([])
+const [showSuggestion,setShowsuggestion]=useState(false)
 useEffect(()=>{const timer=setTimeout(()=>getSearchSuggestions(),200);
 return ()=>{
    clearTimeout(timer)
 }},[searchQuery])
 const getSearchSuggestions=async()=>{
-  console.log("Api call- "+searchQuery)
 const data=await fetch(YOUTUBE_SEARCH_API + searchQuery)
 const json=await data.json();
-
+setSuggestions(json[1]);
 }
 
   const dispatch=useDispatch();
@@ -46,6 +46,8 @@ const json=await data.json();
       type='text'
       value={searchQuery}
       onChange={(e) => setSearchQuery(e.target.value)}
+      onFocus={()=>setShowsuggestion(true)}
+      onBlur={()=>setShowsuggestion(false)}
     />
 
     <button className='border border-black font-bold px-5 py-2 bg-slate-300 rounded-r-full'>
@@ -53,17 +55,16 @@ const json=await data.json();
     </button>
   </div>
 
-  <div className=' ml-4 w-[39%] fixed mt-10 bg-white border z-90 py-2 px-5 rounded-md shadow-xl border-black'>
+  {showSuggestion && (<div className=' ml-4 w-[39%] fixed mt-10 bg-white border z-90 py-2 px-5 rounded-md shadow-xl border-black'>
     <ul className='px-5 py-2'>
-      <li>   🔍 Iphone</li>
-      <li>    🔍 Iphone</li> 
-      <li>   🔍 Iphone</li>
-      <li>   🔍 Iphone</li> 
-      <li>   🔍 Iphone</li>
-      <li>   🔍 Iphone</li> 
+      {suggestions.map(s=> <li key={s}> 🔍 {s}</li>)}
+     
+    
    
     </ul>
   </div>
+  )}
+
 </div>
 
         <button>

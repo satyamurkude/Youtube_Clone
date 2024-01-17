@@ -16,6 +16,7 @@ const VideoContainer = () => {
         } else {
           console.error('No videos found in the response:', data);
         }
+        console.log(videos)
       } catch (error) {
         console.error('Error fetching videos:', error);
       }
@@ -25,7 +26,7 @@ const VideoContainer = () => {
   }, []);
 
   return (
-    <div className='flex flex-wrap'>
+    <div className='flex flex-wrap  '>
       {videos.length > 0 ? (
         videos.map((video) => <Link key={video.id}  to ={"/watch?v="+video.id}><VideoCards info={video} /></Link>)
       ) : (
