@@ -16,7 +16,7 @@ const VideoContainer = () => {
         } else {
           console.error('No videos found in the response:', data);
         }
-        console.log(videos)
+        
       } catch (error) {
         console.error('Error fetching videos:', error);
       }

@@ -10,7 +10,7 @@ const VideoCards = ({ info }) => {
   };
 
   return (
-    <div className="w-80 h-64 ml-4 my-3 bg-white rounded-xl overflow-hidden cursor-pointer shadow-md hover:shadow-lg transition duration-300 transform hover:scale-105">
+    <div className="w-80 h-64 ml-4 my-3 bg-white rounded-xl overflow-hidden  shadow-md hover:shadow-lg transition duration-300 transform hover:scale-105">
       <img
         className="w-full h-40 object-cover shadow-sm"
         src={thumbnails.medium.url}
