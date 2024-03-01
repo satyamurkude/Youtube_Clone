@@ -1,12 +1,22 @@
 import React, { useEffect, useState } from 'react';
 import { toggleFunction } from '../utils/appSlice';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { YOUTUBE_SEARCH_API } from '../utils/constants';
+import { cacheResults } from '../utils/searchSlice';
 const Head = () => {
 const [searchQuery,setSearchQuery]=useState("")
 const [suggestions,setSuggestions]=useState([])
 const [showSuggestion,setShowsuggestion]=useState(false)
-useEffect(()=>{const timer=setTimeout(()=>getSearchSuggestions(),200);
+const searchCache=useSelector((store)=>store.search)
+const dispatch=useDispatch();
+useEffect(() => {
+  const timer = setTimeout(() => {
+    if (searchCache[searchQuery]) {
+      setSuggestions(searchCache[searchQuery]);
+    } else {
+      getSearchSuggestions();
+    }
+  }, 200);
 return ()=>{
    clearTimeout(timer)
 }},[searchQuery])
@@ -14,14 +24,15 @@ const getSearchSuggestions=async()=>{
 const data=await fetch(YOUTUBE_SEARCH_API + searchQuery)
 const json=await data.json();
 setSuggestions(json[1]);
+dispatch(cacheResults({[searchQuery]:json[1],}))
 }
 
-  const dispatch=useDispatch();
+  
   const toggleHandler=()=>{
     dispatch(toggleFunction())
   }
   return (
-    <div className="flex md:grid-flow-col mt-1 md:grid justify-between items-center border-b-2 shadow-sm  sticky top-0 bg-white md:shadow-none md:border-none">
+    <div className="flex md:grid-flow-col mt-2 md:grid justify-between items-center border-b-2 shadow-sm   bg-white md:shadow-none md:border-none">
        <div className="flex items-center md:col-span-3">
         <img onClick={toggleHandler}
           className='h-8 m-1 cursor-pointer p-1'

@@ -13,6 +13,7 @@ const VideoContainer = () => {
 
         if (data.items && data.items.length > 0) {
           setVideos(data.items);
+          
         } else {
           console.error('No videos found in the response:', data);
         }
@@ -23,15 +24,17 @@ const VideoContainer = () => {
     };
 
     fetchVideos();
+    // console.log(videos[5].id)
   }, []);
 
   return (
     <div className='flex flex-wrap  '>
       {videos.length > 0 ? (
-        videos.map((video) => <Link key={video.id}  to ={"/watch?v="+video.id}><VideoCards info={video} /></Link>)
+     videos.map((video) => <Link  key={video.id} to={"/watch?v=" + video.id}><VideoCards info={video} /></Link>)
+                                
       ) : (
         <p>Loading...</p>
-      )}
+      )}  
     </div>
   );
 };
